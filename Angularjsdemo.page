@@ -165,7 +165,7 @@ using Angular.JS
                             <div class="pagination pagination-large pull-left">
                                 <ul>
                                     <li ng-class="{disabled: currentPage == 0}">
-                                        <a ng-click="prevPage()">« Prev</a>
+                                        <a ng-click="prevPage()">ï¿½ Prev</a>
                                     </li>
                                     <li ng-repeat="n in range(pagedItems.length)"
                                     ng-class="{active: n == currentPage}"
@@ -173,7 +173,7 @@ using Angular.JS
                                         <a ng-bind="n + 1">1</a>
                                     </li>
                                     <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
-                                        <a ng-click="nextPage()">Next »</a>
+                                        <a ng-click="nextPage()">Next ï¿½</a>
                                     </li>
                                 </ul>
                             </div>
