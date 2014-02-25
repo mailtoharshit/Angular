@@ -1,0 +1,75 @@
+<apex:page showHeader="false"   sidebar="false">
+   <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js" />
+   <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"/>
+   <apex:includeScript value="{!$Resource.jsForce}" />
+   <html xmlns:ng="http://angularjs.org" ng-app="hello" lang="en">
+      <head>
+         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+         <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.no-icons.min.css" rel="stylesheet"/>
+         <link href="https://netdna.bootstrapcdn.com/font-awesome/2.0/css/font-awesome.css" rel="stylesheet"/>
+         <style>
+            .input-mysize { width: 900px }
+            .search-query {
+            padding-left: 469px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJ5JREFUeNpi+P//PwMQMANxERCfAeI/UBrEZwbJQ9WAFR0A4u1AbAnEbFB6O1ScGaawGoi3wHQiYyBYDZKHKbwHxLo4FOqC5GEKf4Ksw6EQ5IyfIDYTkPEUiNUZsAOQ+F9GRkYJEKcFiDficSOIcRjE4QTiY0C8DuRbqAJLKP8/FP9kQArHUiA+jySJjA8w4LAS5KZd0MAHhaccQIABALsMiBZy4YLtAAAAAElFTkSuQmCC);
+            background-repeat: no-repeat;
+            background-position: 562px 8px;
+            }
+         </style>
+      </head>
+      <div class="ng-app">
+         <div class="navbar">
+            <div class="navbar-inner">
+               <apex:image url="{!$Resource.jsforcelogo}" width="50" height="50"/>
+               <a class="brand" href="">JSforce with Angularjs on Force.com - By OyeCode (Harshit) </a>
+            </div>
+         </div>
+         <div ng-controller="ctrlRead">
+            <div class="input-append">
+               <input type="text" ng-model="query"  class="input-mysize  search-query" placeholder="Search"/>
+            </div>
+            <table class="table table-hover success">
+               <thead>
+                  <tr>
+                     <th class="id">Id&nbsp;<a ng-click="sort_by('id')"><i class="icon-sort"></i></a></th>
+                     <th class="name">Name&nbsp;<a ng-click="sort_by('name')"><i class="icon-sort"></i></a></th>
+                     <th class="Phone">Phone&nbsp;<a ng-click="sort_by('Phone')"><i class="icon-sort"></i></a></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr ng-repeat="item in pagedItems|filter:query" class="success">
+                     <td class="info">
+                        <apex:outputLink value="/{{item.Id}}">
+                           <apex:outputText value="{{item.Name}}" />
+                        </apex:outputLink>
+                     </td>
+                     <td>
+                        <apex:outputText value="{{item.Phone}}" />
+                     </td>
+                     <td>
+                        <apex:outputText value="{{item.Title}}" />
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <!--- Javascript -->
+      <script type="text/javascript">
+         function ctrlRead($scope){  
+             var conn = new jsforce.Connection({ accessToken: '{!$Api.Session_Id}' });
+             var query = "SELECT Id, Name, Phone, Title from Contact ORDER BY Name ASC LIMIT 1000";
+             
+             conn.query(query , function(error, res) {
+                 if (error) {
+                    console.log("error");
+                 } else {
+                     $scope.pagedItems = res.records;
+                     $scope.$apply();
+                 }
+             });
+         }
+         
+      </script>
+   </html>
+</apex:page>
